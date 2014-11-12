@@ -1,0 +1,18 @@
+package com.fishy07x.bukkit.antibypass;
+
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+
+public class PlayerWrapper {
+	private Player player;
+	private long lastBlockPlace;
+	private Location lastLocation;
+	
+	public PlayerWrapper(Player p) {
+		this.player = p;
+	}
+	
+	public Player getPlayer() {
+		return player;
+	}
+}

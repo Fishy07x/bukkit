@@ -1,0 +1,23 @@
+package com.fishy07x.bukkit.antibypass;
+
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+
+public abstract class MyPlayer implements CustomPlayer{
+	protected long lastblockplaced;
+	protected Location lastLocation;
+	
+	public long getLastblockplaced() {
+		return lastblockplaced;
+	}
+	public void setLastblockplaced(long lastblockplaced) {
+		this.lastblockplaced = lastblockplaced;
+	}
+	public Location getLastLocation() {
+		return lastLocation;
+	}
+	public void setLastLocation(Location lastLocation) {
+		this.lastLocation = lastLocation;
+	}	
+	
+}

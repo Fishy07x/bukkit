@@ -1,0 +1,10 @@
+package com.fishy07x.bukkit.antibypass;
+
+import org.bukkit.entity.Player;
+
+public abstract interface MyPlayer extends Player{
+	
+	void setLastBlockPlace(long time);
+	long getLastBlockPlace();
+	
+}

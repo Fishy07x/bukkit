@@ -1,0 +1,13 @@
+package com.fishy07x.bukkit.antibypass;
+
+public class PlayerWrapper {
+	private Player player;
+	
+	public PlayerWrapper(Player p) {
+		this.player = p;
+	}
+	
+	public Player getPlayer() {
+		return player;
+	}
+}

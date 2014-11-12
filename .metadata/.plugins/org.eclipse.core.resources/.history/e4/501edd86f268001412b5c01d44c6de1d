@@ -1,0 +1,10 @@
+package com.fishy07x.bukkit.antibypass;
+
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockPlaceEvent;
+
+public class MyBlockPlaceListener implements Listener{
+	
+	
+}

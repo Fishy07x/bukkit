@@ -1,0 +1,15 @@
+package com.fishy07x.bukkit.antibypass;
+
+import org.bukkit.entity.Player;
+
+public abstract class MyPlayer implements CustomPlayer{
+	protected long lastblockplaced;
+	
+	public void setLastBlockPlace(long time) {
+		lastblockplaced = time;
+	}
+	
+	public long getLastBlockPlace() {
+		return lastblockplaced;
+	}
+}

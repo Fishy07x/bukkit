@@ -1,0 +1,34 @@
+package com.fishy07x.bukkit.antibypass;
+
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+
+public class CustomPlayerData {
+	private long lastBlockPlace;
+	private Location lastLocation;
+	private int entityId;
+	
+	public CustomPlayerData(Player p) {
+		entityId = p.getEntityId();
+		lastLocation = p.getLocation();
+		lastBlockPlace = System.currentTimeMillis();
+	}
+	
+	public int getEntityId() {
+		return entityId;
+	}
+
+	public long getLastBlockPlace() {
+		return lastBlockPlace;
+	}
+	public void setLastBlockPlace(long lastBlockPlace) {
+		this.lastBlockPlace = lastBlockPlace;
+	}
+	
+	public Location getLastLocation() {
+		return lastLocation;
+	}
+	public void setLastLocation(Location location) {
+		this.lastLocation = location;
+	}
+}

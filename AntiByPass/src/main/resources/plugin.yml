@@ -1,0 +1,3 @@
+name: AntiByPass
+main: com.fishy07x.bukkit.antibypass.AntiByPassPlugin
+version: 1.0.0

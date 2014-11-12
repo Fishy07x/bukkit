@@ -1,0 +1,5 @@
+package com.fishy07x.bukkit.antibypass;
+
+public class MyBlockPlaceListener {
+
+}

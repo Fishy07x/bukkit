@@ -1,0 +1,48 @@
+package com.fishy07x.bukkit.antibypass;
+
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockPlaceEvent;
+
+public class BlockListener implements Listener{
+	AntiByPass abp;
+	
+	public BlockListener(AntiByPass abp) {
+		this.abp = abp;
+	}
+	
+	@EventHandler
+	public void onBlockPlace(BlockPlaceEvent e){
+		if (!e.canBuild()) {
+			Player tempplayer = null;
+			int tempplayerindex = -1;
+			for (int i = 0; i < abp.players.size(); i++) {
+				if (abp.players.get(i).getEntityId() == e.getPlayer().getEntityId()) {
+					tempplayer = abp.players.get(i);
+					tempplayerindex = i;
+					break;
+				} 
+			}
+			if (tempplayer != null) {
+				if (abp.playersData.get(tempplayerindex).getLastBlockPlace() > System.currentTimeMillis() - 750 &&
+					abp.playersData.get(tempplayerindex).getLastLocation().getBlockX() == tempplayer.getLocation().getBlockX() &&
+					abp.playersData.get(tempplayerindex).getLastLocation().getBlockZ() == tempplayer.getLocation().getBlockZ() &&
+					abp.playersData.get(tempplayerindex).getLastLocation().getBlockY() < tempplayer.getLocation().getBlockY()
+					) {
+					
+					tempplayer.teleport(abp.playersData.get(tempplayerindex).getLastLocation());
+					tempplayer.sendMessage("U cant jump on blocks in protected areas like this.");
+					abp.getLogger().info("A Player tried to bypass in a protected area.");
+				}
+				
+				abp.playersData.get(tempplayerindex).setLastBlockPlace(System.currentTimeMillis());
+				abp.playersData.get(tempplayerindex).setLastLocation(tempplayer.getLocation());
+				
+			} else {
+				abp.getLogger().warning("An error in the AntiByPass plugin has occured in the blockplaceevent function!");
+			}
+			
+		}
+	}
+}

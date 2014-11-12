@@ -1,0 +1,27 @@
+package com.fishy07x.bukkit.antibypass;
+
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+
+public class PlayerListener implements Listener{
+	private AntiByPass abp;
+	
+	public PlayerListener(AntiByPass abp) {
+		this.abp = abp;
+	}
+	@EventHandler
+	public void onLogin(PlayerLoginEvent e){
+		MyPlayer tempplayer = (MyPlayer) e.getPlayer();
+		tempplayer.setLastLocation(tempplayer.getLocation());
+		tempplayer.setLastBlockPlace(System.currentTimeMillis());
+		
+		abp.getPlayers().add(tempplayer);
+	}
+	
+	@EventHandler
+	public void onLogout(PlayerQuitEvent e){
+		players.remove( (MyPlayer) e.getPlayer());
+	}
+}

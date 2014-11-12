@@ -1,0 +1,45 @@
+package com.fishy07x.bukkit.antibypass;
+
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.block.BlockPlaceEvent;
+
+public class BlockListener implements Listener{
+	
+	
+	@EventHandler
+	public void onBlockPlace(BlockPlaceEvent e){
+		e.getPlayer().sendMessage("Meng get rekt");
+		getLogger().warning("WARNING WARNING ANTIBYPASS WARNING");
+		if (!e.canBuild()) {
+			Player tempplayer = null;
+			int tempplayerindex = -1;
+			for (int i = 0; i < players.size(); i++) {
+				if (players.get(i).getEntityId() == e.getPlayer().getEntityId()) {
+					tempplayer = players.get(i);
+					tempplayerindex = i;
+					break;
+				} 
+			}
+			if (tempplayer != null) {
+				if (playersData.get(tempplayerindex).getLastBlockPlace() > System.currentTimeMillis() - 750 &&
+					playersData.get(tempplayerindex).getLastLocation().getBlockX() == tempplayer.getLocation().getBlockX() &&
+					playersData.get(tempplayerindex).getLastLocation().getBlockZ() == tempplayer.getLocation().getBlockZ() &&
+					playersData.get(tempplayerindex).getLastLocation().getBlockY() < tempplayer.getLocation().getBlockY()
+					) {
+					
+					tempplayer.teleport(playersData.get(tempplayerindex).getLastLocation());
+					tempplayer.sendMessage("No u dont");
+					getLogger().info("A Player tried to bypass in a protected area.");
+				}
+				
+				playersData.get(tempplayerindex).setLastBlockPlace(System.currentTimeMillis());
+				playersData.get(tempplayerindex).setLastLocation(tempplayer.getLocation());
+				
+			} else {
+				getLogger().warning("An error in the AntiByPass plugin has occured in the blockplaceevent function!");
+			}
+			
+		}
+	}
+}

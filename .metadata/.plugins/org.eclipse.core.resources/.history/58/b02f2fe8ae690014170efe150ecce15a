@@ -1,0 +1,68 @@
+package com.fishy07x.bukkit.antibypass;
+
+import java.util.ArrayList;
+
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+
+
+public final class AntiByPass extends JavaPlugin {
+	private final PlayerListener playerListener = new PlayerListener(this);
+	private final BlockListener blockListener = new BlockListener(this);
+	
+	public WorldGuardPlugin worldguard;
+
+	public ArrayList<Player> players;
+	public ArrayList<CustomPlayerData> playersData;
+	
+	@Override
+	public void onEnable() {
+		init();
+	}
+	
+	@Override
+	public void onDisable(){
+		
+	}
+	
+	public void init(){
+		
+		PluginManager pm = getServer().getPluginManager();
+		pm.registerEvents(playerListener, this);
+		pm.registerEvents(blockListener, this);
+		
+		worldguard = getWorldGuard();
+		
+		//Make new player arraylist
+		players = new ArrayList<Player> ();
+		
+		//Insert current online players into player arraylist
+		Player[] currentPlayers = Bukkit.getServer().getOnlinePlayers();
+		for (int i = 0; i < currentPlayers.length; i++) {
+			Player tempplayer = currentPlayers[i];
+			CustomPlayerData tempdata = new CustomPlayerData();
+			tempdata.setLastBlockPlace(System.currentTimeMillis());
+			tempdata.setLastLocation(tempplayer.getLocation());
+			players.add(tempplayer);
+			playersData.add(tempdata);
+		}
+	}
+	
+	private WorldGuardPlugin getWorldGuard() {
+	    Plugin plugin = getServer().getPluginManager().getPlugin("WorldGuard");
+	 
+	    // WorldGuard may not be loaded
+	    if (plugin == null || !(plugin instanceof WorldGuardPlugin)) {
+	        return null; // Maybe you want throw an exception instead
+	    }
+	 
+	    return (WorldGuardPlugin) plugin;
+	}
+	
+
+}

@@ -1,0 +1,21 @@
+package com.fishy07x.bukkit.antibypass;
+
+import com.sk89q.worldedit.Location;
+
+public class CustomPlayerData {
+	private long lastBlockPlace;
+	private Location lastLocation;
+	
+	public long getLastBlockPlace() {
+		return lastBlockPlace;
+	}
+	public void setLastBlockPlace(long lastBlockPlace) {
+		this.lastBlockPlace = lastBlockPlace;
+	}
+	public Location getLastLocation() {
+		return lastLocation;
+	}
+	public void setLastLocation(Location lastLocation) {
+		this.lastLocation = lastLocation;
+	}
+}

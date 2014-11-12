@@ -1,0 +1,58 @@
+package com.fishy07x.bukkit.antibypass;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+
+public final class AntiByPass extends JavaPlugin {
+	private WorldGuardPlugin worldguard;
+	private ArrayList players;
+	
+	@Override
+	public void onEnable() {
+		init();
+	}
+	
+	@Override
+	public void onDisable(){
+		
+	}
+	
+	public void init(){
+		worldguard = getWorldGuard();
+		players = (Bukkit.getServer().getOnlinePlayers());
+		for()
+	}
+	
+	private WorldGuardPlugin getWorldGuard() {
+		Plugin plugin = getServer().getPluginManager().getPlugin("Worldguard");
+		
+		if (plugin == null || !(plugin instanceof WorldGuardPlugin)) {
+			return null;
+		}
+		
+		return (WorldGuardPlugin) plugin;
+	}
+	
+	@EventHandler
+	public void onBlockPlace(BlockPlaceEvent e){
+		if (!e.canBuild()) {
+			return;
+		}
+	}
+	
+	@EventHandler
+	public void onLogin(PlayerLoginEvent e){
+		e.getPlayer();
+	}
+
+}

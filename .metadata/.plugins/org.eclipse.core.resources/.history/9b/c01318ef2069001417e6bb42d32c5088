@@ -1,0 +1,101 @@
+package com.fishy07x.bukkit.antibypass;
+
+import java.util.ArrayList;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+
+public final class AntiByPass extends JavaPlugin {
+	private final PlayerListener playerListener = new PlayerListener(this);
+	
+	private WorldGuardPlugin worldguard;
+	public ArrayList<Player> players;
+	public ArrayList<CustomPlayerData> playersData;
+	
+	@Override
+	public void onEnable() {
+		init();
+	}
+	
+	@Override
+	public void onDisable(){
+		
+	}
+	
+	public void init(){
+		
+		//Init worldguard
+		PluginManager pm = getServer().getPluginManager();
+		pm.registerEvents(playerListener, this);
+		worldguard = getWorldGuard();
+		
+		//Make new player arraylist
+		players = new ArrayList<Player> ();
+		
+		//Insert current online players into player arraylist
+		Player[] currentPlayers = Bukkit.getServer().getOnlinePlayers();
+		for (int i = 0; i < currentPlayers.length; i++) {
+			Player tempplayer = currentPlayers[i];
+			tempplayer.setLastLocation(tempplayer.getLocation());
+			tempplayer.setLastBlockPlace(System.currentTimeMillis());
+			players.add(tempplayer);
+		}
+	}
+	
+	private WorldGuardPlugin getWorldGuard() {
+		Plugin plugin = getServer().getPluginManager().getPlugin("Worldguard");		
+		if (plugin == null || !(plugin instanceof WorldGuardPlugin)) {
+			return null;
+		}
+		return (WorldGuardPlugin) plugin;
+	}
+	
+	@EventHandler
+	public void onBlockPlace(BlockPlaceEvent e){
+		e.getPlayer().sendMessage("Meng get rekt");
+		getLogger().warning("WARNING WARNING ANTIBYPASS WARNING");
+		if (!e.canBuild()) {
+			Player tempplayer = null;
+			int tempplayerindex = -1;
+			for (int i = 0; i < players.size(); i++) {
+				if (players.get(i).getEntityId() == e.getPlayer().getEntityId()) {
+					tempplayer = players.get(i);
+					tempplayerindex = i;
+					break;
+				} 
+			}
+			if (tempplayer != null) {
+				if (tempplayer.getLastBlockPlace() > System.currentTimeMillis() - 750 &&
+					tempplayer.getLastLocation().getBlockX() == tempplayer.getLocation().getBlockX() &&
+					tempplayer.getLastLocation().getBlockZ() == tempplayer.getLocation().getBlockZ() &&
+					tempplayer.getLastLocation().getBlockY() < tempplayer.getLocation().getBlockY()
+					) {
+					
+					tempplayer.teleport(tempplayer.getLastLocation());
+					tempplayer.sendMessage("No u dont");
+					getLogger().info("A Player tried to bypass in a protected area.");
+				}
+				
+				players.get(tempplayerindex).setLastBlockPlace(System.currentTimeMillis());
+				players.get(tempplayerindex).setLastLocation(tempplayer.getLocation());
+				
+			} else {
+				getLogger().warning("An error in the AntiByPass plugin has occured in the blockplaceevent function!");
+			}
+			
+		}
+	}
+	
+	
+
+}
